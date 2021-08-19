@@ -10,6 +10,7 @@ public class HomeFeedDTO {
     private String desc;
     private String price;
     private String category;
+    private String companyName;
 
     public HomeFeedDTO(Product product) {
         this.productid = product.getId();
@@ -17,5 +18,6 @@ public class HomeFeedDTO {
         this.desc = product.getDescription();
         this.price = product.getPrice().toString();
         this.category = product.getCategory().getName();
+        this.companyName = product.getVendor().getCompany_name();
     }
 }

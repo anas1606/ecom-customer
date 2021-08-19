@@ -42,6 +42,7 @@ public class CommanUtil {
         rs.setData(data);
         rs.setMessage(message);
         rs.setStatus(status);
+        rs.setResult(page);
         rs.setStatusCode(status.value());
         return rs;
     }
@@ -94,7 +95,7 @@ public class CommanUtil {
             pageDetailModel.setLimit(20);
         }
         if (checkNull(pageDetailModel.getSortorder())) {
-            pageDetailModel.setSortorder("DESC");
+            pageDetailModel.setSortorder("ASC");
         }
 
         return pageDetailModel;

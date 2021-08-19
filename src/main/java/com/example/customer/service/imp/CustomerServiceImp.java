@@ -266,7 +266,7 @@ public class CustomerServiceImp implements CustomerService {
             if (commanUtil.checkNull(pageDetailModel.getCategory()))
                 dto = productRepository.findAllPagable(page);
             else
-                dto = productRepository.findAllPagable(page);
+                dto = productRepository.findAllByCategoryPagable(pageDetailModel.getCategory(), page);
 
             return commanUtil.create(Message.SUCCESS, dto.getContent(), commanUtil.pagersultModel(dto), HttpStatus.OK);
         } catch (Exception e) {
