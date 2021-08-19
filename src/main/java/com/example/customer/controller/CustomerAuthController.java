@@ -96,7 +96,6 @@ public class CustomerAuthController {
 
     @PostMapping("update")
     public ResponseModel updateCustomer(@RequestBody CustomerUpdateModel model) {
-        System.out.println("in");
         return customerService.updateCustomer(model);
     }
 
