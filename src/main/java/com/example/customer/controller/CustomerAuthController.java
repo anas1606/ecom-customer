@@ -94,7 +94,7 @@ public class CustomerAuthController {
         return customerService.viewProfile();
     }
 
-    @PostMapping("update")
+    @PutMapping("update")
     public ResponseModel updateCustomer(@RequestBody CustomerUpdateModel model) {
         return customerService.updateCustomer(model);
     }
