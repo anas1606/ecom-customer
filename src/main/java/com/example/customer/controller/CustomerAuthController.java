@@ -99,7 +99,7 @@ public class CustomerAuthController {
         return customerService.updateCustomer(model);
     }
 
-    @GetMapping("buynow/{id}")
+    @PostMapping("buynow/{id}")
     public ResponseModel buyNow(@PathVariable("id") String id) {
         return customerService.buyProduct(id);
     }
