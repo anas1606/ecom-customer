@@ -6,7 +6,6 @@ import com.example.customer.auth.JwtTokenUtil;
 import com.example.customer.model.*;
 import com.example.customer.repository.*;
 import com.example.customer.service.CustomerService;
-import com.example.customer.service.JwtUserDetailService;
 import com.example.customer.util.CommanUtil;
 import com.example.customer.util.FileUpload;
 import com.example.customer.util.Message;
