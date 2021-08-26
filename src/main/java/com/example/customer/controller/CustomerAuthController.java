@@ -37,6 +37,7 @@ public class CustomerAuthController {
     @PostMapping("register")
     public ResponseModel register(HttpServletRequest req, @RequestParam("data") String data, MultipartHttpServletRequest multipartRequest) {
         try {
+            System.out.println(data);
             CustomerRegistrationModel model;
             model = ObjectMapperUtil.getObjectMapper().readValue(data, CustomerRegistrationModel.class);
 

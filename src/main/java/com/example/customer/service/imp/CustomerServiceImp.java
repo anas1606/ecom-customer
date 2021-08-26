@@ -83,7 +83,7 @@ public class CustomerServiceImp implements CustomerService {
             customerRepository.save(customer);
 
             responseModel = commanUtil.create(Message.LOGIN_SUCCESS,
-                    customer.getSession_token(),
+                    customer,
                     HttpStatus.OK);
 
         } catch (BadCredentialsException ex) {
@@ -152,6 +152,7 @@ public class CustomerServiceImp implements CustomerService {
                 if (file != null)
                     str = new FileUpload().saveFile(folder, file, customer.getId());
                 customer.setProfile_url(str);
+                customerRepository.save(customer);
 
                 return commanUtil.create(Message.PROFILE_UPLODED, null, HttpStatus.OK);
 
@@ -190,8 +191,9 @@ public class CustomerServiceImp implements CustomerService {
     public ResponseModel viewProfile() {
         Customer customer = customerRepository.findByEmailid(commanUtil.getCurrentUserEmail());
         if (customer != null) {
-            Customer_Address customerAddress = customerAddressRepository.findByCustomer_Id(customer.getId());
+            CustomerAddress customerAddress = customerAddressRepository.findByCustomer_Id(customer.getId());
             CustomerDTO dto = new CustomerDTO(customerAddress);
+            dto.setHobby(customerHobbyRepository.findAllByCustomer_Id(customer.getId()));
 
             return commanUtil.create(Message.SUCCESS, dto, HttpStatus.OK);
         } else {
@@ -229,7 +231,7 @@ public class CustomerServiceImp implements CustomerService {
             Product product = productRepository.findById(productid).orElse(null);
             if (product != null) {
 
-                Order_Detail order = new Order_Detail();
+                OrderDetail order = new OrderDetail();
                 order.setCustomer(customer);
                 order.setProduct(product);
                 orderDetailRepository.save(order);
@@ -262,10 +264,11 @@ public class CustomerServiceImp implements CustomerService {
             pageDetailModel = commanUtil.fillValueToPageModel(pageDetailModel);
             Pageable page = commanUtil.getPageDetail(pageDetailModel);
             Page<HomeFeedDTO> dto;
+            String search = "%"+pageDetailModel.getSearch()+"%";
             if (commanUtil.checkNull(pageDetailModel.getCategory()))
-                dto = productRepository.findAllPagable(page);
+                dto = productRepository.findAllPagable(search,page);
             else
-                dto = productRepository.findAllByCategoryPagable(pageDetailModel.getCategory(), page);
+                dto = productRepository.findAllByCategoryPagable(search,pageDetailModel.getCategory(), page);
 
             return commanUtil.create(Message.SUCCESS, dto.getContent(), commanUtil.pagersultModel(dto), HttpStatus.OK);
         } catch (Exception e) {
@@ -279,7 +282,7 @@ public class CustomerServiceImp implements CustomerService {
     private void insertHobby(Customer customer, List<String> hobby) {
         logger.info("Inserting Hobby");
         hobby.forEach(h -> {
-            Customer_Hobby customerHobby = new Customer_Hobby();
+            CustomerHobby customerHobby = new CustomerHobby();
             customerHobby.setCustomer(customer);
             customerHobby.setHobby(hobbyRepository.findByName(h));
             customerHobbyRepository.save(customerHobby);
@@ -289,7 +292,7 @@ public class CustomerServiceImp implements CustomerService {
     private void insertAddress(Customer customer, CustomerRegistrationModel model) {
         logger.info("Inserting Address");
 //        Get CustomerAddress object From DTO
-        Customer_Address customerAddress = model.getCustomerAddressFromModel();
+        CustomerAddress customerAddress = model.getCustomerAddressFromModel();
         customerAddress.setCustomer(customer);
 //        insert Country And State
         addCountryAndState(customerAddress, model.getCountry(), model.getState());
@@ -298,14 +301,14 @@ public class CustomerServiceImp implements CustomerService {
     private void UpdateAddress(Customer customer, CustomerUpdateModel model) {
         logger.info("Updating Address");
 //        Get CustomerAddress object From DTO
-        Customer_Address customerAddress = customerAddressRepository.findByCustomer_Id(customer.getId());
+        CustomerAddress customerAddress = customerAddressRepository.findByCustomer_Id(customer.getId());
         customerAddress = model.getUpdatedCustomerAddressFromModel(customerAddress);
         customerAddress.setCustomer(customer);
 //        insert Country And State
         addCountryAndState(customerAddress, model.getCountry(), model.getState());
     }
 
-    private void addCountryAndState(Customer_Address customerAddress, String countryName, String stateName) {
+    private void addCountryAndState(CustomerAddress customerAddress, String countryName, String stateName) {
 //        Fill the Country and State
         Country country = countryRepository.findByName(countryName);
         if (country != null)
@@ -320,7 +323,7 @@ public class CustomerServiceImp implements CustomerService {
     private void updateHobby(Customer customer, List<String> hobby) {
         logger.info("Updating the Hobby");
 //        Delete The Existing Hobby
-        customerHobbyRepository.deleteByCustomer(customer.getId());
+        customerHobbyRepository.deleteByCustomer_Id(customer.getId());
 //        insert The All Updated Hobby
         insertHobby(customer, hobby);
     }

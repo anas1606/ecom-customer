@@ -1,7 +1,7 @@
 package com.example.customer.model;
 
 import com.example.commanentity.Customer;
-import com.example.commanentity.Customer_Address;
+import com.example.commanentity.CustomerAddress;
 import com.example.commanentity.enums.Gender;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +20,7 @@ public class CustomerRegistrationModel {
     private String address2;
     private String country;
     private String state;
-    private int pincode;
+    private String pincode;
     private List<String> hobby;
     private MultipartFile profileURL;
 
@@ -35,8 +35,8 @@ public class CustomerRegistrationModel {
         return c;
     }
 
-    public Customer_Address getCustomerAddressFromModel() {
-        Customer_Address ca = new Customer_Address();
+    public CustomerAddress getCustomerAddressFromModel() {
+        CustomerAddress ca = new CustomerAddress();
         ca.setAddress1(address1);
         ca.setAddress2(address2);
         ca.setPincode(pincode);

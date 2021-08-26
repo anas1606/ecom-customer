@@ -9,4 +9,5 @@ public class PageDetailModel {
     private Integer limit;
     private String sortorder;
     private String category;
+    private String search;
 }

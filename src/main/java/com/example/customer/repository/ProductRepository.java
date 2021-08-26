@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, String> {
 
-    @Query("SELECT new com.example.customer.model.HomeFeedDTO(p) FROM Product p WHERE p.status = 1")
-    Page<HomeFeedDTO> findAllPagable(Pageable page);
+    @Query("SELECT new com.example.customer.model.HomeFeedDTO(p) FROM Product p WHERE p.name like :search AND p.status = 1")
+    Page<HomeFeedDTO> findAllPagable(String search, Pageable page);
 
-    @Query("SELECT new com.example.customer.model.HomeFeedDTO(p) FROM Product p WHERE p.status = 1 AND p.category.name = :category")
-    Page<HomeFeedDTO> findAllByCategoryPagable(String category, Pageable page);
+    @Query("SELECT new com.example.customer.model.HomeFeedDTO(p) FROM Product p WHERE p.name like :search AND p.status = 1 AND p.category.name = :category")
+    Page<HomeFeedDTO> findAllByCategoryPagable(String search, String category, Pageable page);
 }
