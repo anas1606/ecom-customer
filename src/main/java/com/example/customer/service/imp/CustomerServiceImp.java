@@ -127,7 +127,7 @@ public class CustomerServiceImp implements CustomerService {
                     insertHobby(customer, model.getHobby());
                 commanUtil.sendVerificationEmail(customer.getEmailid(), customer.getEmail_verification_otp());
 
-                return commanUtil.create(Message.CUSTOMER_REGISTER, null, HttpStatus.OK);
+                return commanUtil.create(Message.CUSTOMER_REGISTER, customer.getId(), HttpStatus.OK);
 
             } catch (Exception e) {
                 logger.error("Error Will Registration");
